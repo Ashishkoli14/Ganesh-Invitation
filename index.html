@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ganeshotsav 2026 — Invitation from the Koli Family</title>
-<meta name="description" content="Ganpati Bappa Morya! You and your family are invited for darshan, aarti and bhog at our home in Kharghar on 14 &amp; 15 September 2026. Bhog is served both days — please come anytime.">
+<meta name="description" content="Ganpati Bappa Morya! You and your family are invited for darshan, aarti and bhog at our home in Kharghar on 14 &amp; 15 September 2026. Bhog is served both days — p[...]
 <meta name="theme-color" content="#f6ce97">
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23971F0F'/%3E%3Ctext x='16' y='23' font-size='19' text-anchor='middle' fill='%23FCE6C0'%3E%E0%A5%90%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23971F0F'/%3E%3Ctext x='16' y='23' font-size='19'[...]
 
 <!-- Share preview (WhatsApp / social). Set og:url and og:image to your hosted URL. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ganeshotsav 2026 — Invitation from the Koli Family">
 <meta property="og:description" content="Sthapana &amp; Visarjan · 14–15 September 2026 · Kaveri CHS, Kharghar. Bhog both days — come anytime.">
-<meta property="og:image" content="assets/garland.png">
+<meta property="og:image" content="uploads/garland.png">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -706,7 +706,7 @@ p, h1, h2 { margin: 0; }
   <!-- 01 Hero -->
   <section class="hero" aria-label="Ganpati Bappa Morya">
     <video id="heroVideo" class="hero__video"
-           src="uploads/Mouse_looking_at_rotating_Ganpati_202609051306.mp4"
+           src="uploads/gemini_generated_video_f217f664.mp4"
            poster="uploads/hero-poster.jpg" preload="metadata"
            autoplay loop muted playsinline aria-hidden="true"></video>
     <div class="hero__scrim"></div>
@@ -727,15 +727,15 @@ p, h1, h2 { margin: 0; }
       <span class="spark spark--3" aria-hidden="true"></span>
 
       <div id="garlandL" class="garland garland--left">
-        <img src="assets/garland.png" alt="Jasmine garlands">
+        <img src="uploads/garland.png" alt="Jasmine garlands">
       </div>
       <div id="garlandR" class="garland garland--right" aria-hidden="true">
-        <img src="assets/garland.png" alt="">
+        <img src="uploads/garland.png" alt="">
       </div>
 
       <div id="bell1" class="bell bell--1">
         <div class="bell__swing bell__swing--slow-a">
-          <img src="assets/bellLong2.png" alt="Temple bell">
+          <img src="uploads/bell.png" alt="Temple bell">
         </div>
       </div>
       <div id="bell2" class="bell bell--2">
@@ -750,12 +750,12 @@ p, h1, h2 { margin: 0; }
       </div>
       <div id="bell4" class="bell bell--4">
         <div class="bell__swing bell__swing--slow-b">
-          <img src="assets/bellLong2.png" alt="Temple bell">
+          <img src="uploads/bell.png" alt="Temple bell">
         </div>
       </div>
 
-      <img id="diyaL" class="diya diya--left" src="assets/lamp2.png" alt="Brass oil lamp">
-      <img id="diyaR" class="diya diya--right" src="assets/lamp2.png" alt="Brass oil lamp">
+      <img id="diyaL" class="diya diya--left" src="uploads/lamp2.png" alt="Brass oil lamp">
+      <img id="diyaR" class="diya diya--right" src="uploads/lamp2.png" alt="Brass oil lamp">
 
       <div id="invite" class="invite">
         <p class="invite__salutation" lang="sa">॥ श्री गणेशाय नमः ॥</p>
@@ -999,140 +999,56 @@ p, h1, h2 { margin: 0; }
       }
     }
 
-    /* --- Scene 01: hero copy fades on first scroll ---------- */
-    if (el.heroText) {
-      var y = window.scrollY || document.documentElement.scrollTop || 0;
-      el.heroText.style.opacity = Math.max(0, 1 - y / (vh * 0.45));
-    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* --- WhatsApp share button -------------------------------- */
+  if (el.shareBtn && CONFIG.showWhatsApp) {
+    el.shareBtn.addEventListener('click', function () {
+      var text = CONFIG.shareMessage + CONFIG.mapsUrl;
+      var url = 'https://wa.me/?text=' + encodeURIComponent(text);
+      window.open(url, '_blank');
+    });
   }
 
-  /* --- Render loop ---------------------------------------- */
-  var rafId = null;
-  var beatId = null;
-  var looping = false;
-
-  function loop() {
-    frame();
-    if (document.hidden) { looping = false; return; }
-    looping = true;
-    rafId = requestAnimationFrame(loop);
+  /* --- Mushak / directions button -------- */
+  if (el.mapBtn) {
+    el.mapBtn.addEventListener('click', function () {
+      window.open(CONFIG.mapsUrl, '_blank');
+    });
   }
 
-  /* Safari/iOS can silently drop autoplay; nudge the video back. */
-  function kickVideo() {
-    var v = el.heroVideo;
-    if (!v || !v.paused) return;
-    v.muted = true;
-    var pr = v.play();
-    if (pr && pr.catch) pr.catch(function () {});
-  }
+  /* --- Countdown timer -------------------------------- */
+  function updateCountdown() {
+    var targetDate = new Date('2026-09-14T09:00:00+05:30').getTime();
+    var now = new Date().getTime();
+    var diff = targetDate - now;
 
-  function tick() {
-    frame();
-    kickVideo();
-  }
-
-
-  /* --- Countdown ------------------------------------------
-     Fixed IST offsets, so the numbers read the same for a guest
-     in Kharghar and one abroad. */
-  var STHAPANA = Date.parse('2026-09-14T09:00:00+05:30');
-  var VISARJAN = Date.parse('2026-09-15T21:00:00+05:30');
-  var cdTimer = null;
-
-  function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-  function paintCountdown() {
-    if (!el.countdown) return;
-    var now = Date.now();
-    var left = STHAPANA - now;
-
-    if (left <= 0) {
-      /* Once Bappa is home the counter would be meaningless, so the
-         block turns into a status line instead of hiding entirely. */
-      if (el.cdUnits) el.cdUnits.hidden = true;
-      el.countdown.classList.add('countdown--arrived');
-      if (now < VISARJAN) {
-        if (el.cdLabel) el.cdLabel.textContent = 'Bappa is home';
-        if (el.cdNote) el.cdNote.textContent = 'Darshan and bhog are on — do come across.';
-      } else {
-        if (el.cdLabel) el.cdLabel.textContent = 'Ganpati Bappa Morya';
-        if (el.cdNote) el.cdNote.textContent = 'Pudhchya varshi lavkar ya';
+    if (diff < 0) {
+      if (el.countdown) {
+        el.countdown.classList.add('countdown--arrived');
+        if (el.cdLabel) { el.cdLabel.textContent = 'Bappa has arrived!'; }
+        if (el.cdUnits) { el.cdUnits.style.display = 'none'; }
+        if (el.cdNote) { el.cdNote.textContent = 'May your celebrations be filled with joy!'; }
       }
-      if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
       return;
     }
 
-    var s = Math.floor(left / 1000);
-    var d = Math.floor(s / 86400);
-    var h = Math.floor((s % 86400) / 3600);
-    var m = Math.floor((s % 3600) / 60);
-    var sec = s % 60;
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    if (el.cdD) el.cdD.textContent = String(d);
-    if (el.cdH) el.cdH.textContent = pad(h);
-    if (el.cdM) el.cdM.textContent = pad(m);
-    if (el.cdS) el.cdS.textContent = pad(sec);
+    if (el.cdD) { el.cdD.textContent = String(days).padStart(2, '0'); }
+    if (el.cdH) { el.cdH.textContent = String(hours).padStart(2, '0'); }
+    if (el.cdM) { el.cdM.textContent = String(minutes).padStart(2, '0'); }
+    if (el.cdS) { el.cdS.textContent = String(seconds).padStart(2, '0'); }
   }
 
-  function startCountdown() {
-    paintCountdown();
-    if (!cdTimer) cdTimer = setInterval(paintCountdown, 1000);
-  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 
-  /* --- Interactions --------------------------------------- */
-  function openMap() {
-    window.open(CONFIG.mapsUrl, '_blank', 'noopener');
-  }
-
-  function shareOnWhatsApp() {
-    var text = CONFIG.shareMessage + CONFIG.mapsUrl;
-    var win = window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
-    /* Desktops without WhatsApp installed get a blocked or blank tab, so
-       fall back to copying the text rather than leaving the tap dead. */
-    if (!win && navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text + ' ' + window.location.href).then(function () {
-        var label = el.shareBtn.textContent;
-        el.shareBtn.textContent = 'Invitation copied — paste it anywhere';
-        setTimeout(function () { el.shareBtn.textContent = label; }, 2600);
-      })['catch'](function () {});
-    }
-  }
-
-  /* --- Boot ----------------------------------------------- */
-  function start() {
-    if (el.petals) el.petals.hidden = !CONFIG.showPetals;
-    if (el.shareBtn) {
-      el.shareBtn.hidden = !CONFIG.showWhatsApp;
-      el.shareBtn.addEventListener('click', shareOnWhatsApp);
-    }
-    if (el.mapBtn) el.mapBtn.addEventListener('click', openMap);
-
-    document.addEventListener('scroll', tick, { passive: true, capture: true });
-    window.addEventListener('resize', tick);
-    document.addEventListener('visibilitychange', function () {
-      tick();
-      if (!looping) loop();
-      if (!document.hidden) startCountdown();
-    });
-
-    startCountdown();
-
-    beatId = setInterval(tick, 100);
-    loop();
-  }
-
-  window.addEventListener('pagehide', function () {
-    cancelAnimationFrame(rafId);
-    clearInterval(beatId);
-    if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
-  });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start);
-  } else {
-    start();
-  }
 })();
 </script>
 </body>
